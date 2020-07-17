@@ -5,8 +5,8 @@ import { IntlContextConsumer } from "./intl-context"
 
 const getLink = (language, to, routed, messages) => {
   const currentPage = to.replace(/\//g, "")
-  const slugTo = messages[`${currentPage}.slug`] ? messages[`${currentPage}.slug`] : to
-  const link = routed || language ? `/${language}/${slugTo}` : `${slugTo}`
+  const slugTo = messages[`${currentPage}.slug`] ? `/${messages[`${currentPage}.slug`]}` : to
+  const link = routed || language ? `/${language}${slugTo}` : `${slugTo}`
 
   return link;
 }
@@ -64,7 +64,7 @@ export const changeLocale = (language, to) => {
   const { slugs } = window.___gatsbyIntl
 
   // TODO: check slash
-  const link = `/${language}${slugs[language]}${window.location.search}`
+  const link = slugs[language] ? `/${language}${slugs[language]}${window.location.search}` : `/${language}/404`
   localStorage.setItem("gatsby-intl-language", language)
   gatsbyNavigate(link)
 }

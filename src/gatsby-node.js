@@ -71,7 +71,8 @@ exports.onCreatePage = async ({ page, actions }, pluginOptions) => {
 
   // Return all languages slug for this page
   const getSlugs = (path) => {
-    const currentPage = page.path.replace(/\//g, "")
+    var currentPage = page.path.replace(/\//g, "")
+
     var slugs = {}
     languages.forEach(language => {
       var messages = getMessages(path, language)
@@ -82,7 +83,7 @@ exports.onCreatePage = async ({ page, actions }, pluginOptions) => {
 
   const generatePage = (routed, language) => {
     const messages = getMessages(path, language)
-    const slugs = getSlugs(path);
+    const slugs = page.context.generatedContent ? page.context.slugs : getSlugs(path);
     var newPath = routed ? `/${language}${slugs[language]}` : `${slugs[language]}`
     return {
       ...page,
@@ -106,9 +107,13 @@ exports.onCreatePage = async ({ page, actions }, pluginOptions) => {
 
   const newPage = generatePage(false, defaultLanguage)
   deletePage(page)
-  createPage(newPage)
+  if (!page.context.generatedContent || (page.context.generatedContent && page.context.slugs[defaultLanguage])) {
+    createPage(newPage)
+  }
 
   languages.forEach(language => {
+    if (page.context.generatedContent && page.context.generatedLanguage !== language)
+      return;
     const localePage = generatePage(true, language)
     const regexp = new RegExp("/404/?$")
     if (regexp.test(localePage.path)) {
