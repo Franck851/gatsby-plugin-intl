@@ -76,7 +76,7 @@ exports.onCreatePage = async ({ page, actions }, pluginOptions) => {
     var slugs = {}
     languages.forEach(language => {
       var messages = getMessages(path, language)
-      slugs[language] = messages[`${currentPage}.slug`] ? `/${messages[currentPage + '.slug']}` : `/${currentPage}`
+      slugs[language] = messages[`${currentPage}.slug`] ? `/${messages[currentPage + '.slug']}/` : `/${currentPage}`
     })
     return slugs
   }
