@@ -79,17 +79,18 @@ exports.onCreatePage = async ({ page, actions }, pluginOptions) => {
 
     var slugs = {};
     var pathtmp = "";
-    languages.forEach((language) => {
-      var messages = getMessages(path, language);
-      currentPageList.forEach((currentPage) => {
-        if (currentPage === "") {
-          break;
-        }
-        pathtmp += messages[`${currentPage}.slug`]
-          ? `/${messages[currentPage + ".slug"]}`
-          : `/${currentPage}`;
-      });
-      console.log(pathtmp);
+    try {
+      languages.forEach((language) => {
+        var messages = getMessages(path, language);
+        currentPageList.forEach((currentPage) => {
+          if (currentPage === "") throw BreakException;
+          pathtmp += messages[`${currentPage}.slug`]
+            ? `/${messages[currentPage + ".slug"]}`
+            : `/${currentPage}`;
+        });
+      } catch (e) {
+        if (e !== BreakException) throw e;
+      }
       slugs[language] = pathtmp;
     });
     return slugs;
