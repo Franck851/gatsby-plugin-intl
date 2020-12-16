@@ -71,7 +71,8 @@ exports.onCreatePage = async ({ page, actions }, pluginOptions) => {
 
   // Return all languages slug for this page
   const getSlugs = path => {
-    var currentPageList = page.path.split("/").filter(item => item)
+    var currentPageArray = page.path.split("/").filter(item => item)
+    var currentPageList = currentPageArray.lenght === 0 ? [""] : currentPageArray;
 
     var slugs = {}
     var pathtmp = ""
