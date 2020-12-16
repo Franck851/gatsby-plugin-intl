@@ -4,7 +4,7 @@ import { Link as GatsbyLink, navigate as gatsbyNavigate } from "gatsby"
 import { IntlContextConsumer } from "./intl-context"
 
 const getLink = (language, to, routed, messages) => {
-  const currentPageArray = page.path.split("/").filter(item => item)
+  const currentPageArray = to.split("/").filter(item => item)
   var slugTo = ""
   currentPageArray.forEach(currentPage => {
         slugTo += messages[`${currentPage}.slug`]
